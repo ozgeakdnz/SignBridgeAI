@@ -1,0 +1,17 @@
+YAMNet audio event classifier
+Copyright 2019 The TensorFlow Authors
+
+Source:
+  https://github.com/tensorflow/models/tree/master/research/audioset/yamnet
+  https://www.kaggle.com/models/google/yamnet
+  MediaPipe packaged TFLite:
+  https://storage.googleapis.com/mediapipe-models/audio_classifier/yamnet/float32/1/yamnet.tflite
+
+Class map:
+  https://github.com/tensorflow/models/blob/master/research/audioset/yamnet/yamnet_class_map.csv
+  (521 AudioSet classes)
+
+License: Apache License 2.0
+  http://www.apache.org/licenses/LICENSE-2.0
+
+The model is used on-device only. Audio is not uploaded.

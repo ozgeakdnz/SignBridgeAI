@@ -1,0 +1,9 @@
+# Hackathon TİD backend — sürümler SignBridge requirements ile uyumlu tutuldu
+fastapi==0.122.0
+uvicorn[standard]==0.38.0
+python-multipart==0.0.20
+numpy==1.26.4
+opencv-python-headless==4.11.0.86
+mediapipe==0.10.21
+onnxruntime==1.20.1
+pydantic==2.12.5
