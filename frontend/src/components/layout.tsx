@@ -42,19 +42,21 @@ export function AppHeader({ subtitle }: AppHeaderProps) {
   return (
     <header className="fixed top-0 z-50 w-full bg-surface-container-lowest/90 pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)] backdrop-blur-xl">
       <div className="flex h-16 items-center justify-between px-margin">
-        <div className="flex items-center gap-space-sm">
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary-container text-on-primary">
-            <Icon name="hearing" className="text-[18px]" />
-          </div>
-          <div className="flex flex-col">
+        <Link
+          to="/"
+          aria-label="SignBridge AI ana sayfa"
+          className="flex min-w-0 items-center gap-space-sm transition-opacity hover:opacity-80 active:scale-[0.98]"
+        >
+          <BrandMark />
+          <div className="flex min-w-0 flex-col">
             <span className="text-lg font-semibold leading-none tracking-tight text-primary">
               SignBridge
             </span>
-            <span className="mt-0.5 text-[11px] font-medium leading-none tracking-wide text-on-surface-variant">
+            <span className="mt-0.5 truncate text-[11px] font-medium leading-none tracking-wide text-on-surface-variant">
               {subtitle}
             </span>
           </div>
-        </div>
+        </Link>
         <div className="flex items-center gap-space-sm">
           <ListeningBadge />
           <Link
@@ -67,6 +69,26 @@ export function AppHeader({ subtitle }: AppHeaderProps) {
         </div>
       </div>
     </header>
+  )
+}
+
+function BrandMark() {
+  return (
+    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[12px] bg-[linear-gradient(145deg,#4A7DE8,#1E4BB8)] shadow-[0_6px_14px_rgba(42,86,200,0.3)]">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#fff"
+        strokeWidth="1.9"
+        strokeLinecap="round"
+        aria-hidden="true"
+      >
+        <path d="M3 12c1.6-3.4 3.2-3.4 4.8 0s3.2 3.4 4.8 0 3.2-3.4 4.8 0" />
+        <path d="M20 7v10" />
+      </svg>
+    </span>
   )
 }
 

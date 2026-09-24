@@ -1,7 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { AppHeader } from '../components/layout'
 import { Icon } from '../components/Icon'
-import { predictLiveFrame, predictSignVideo, resetLiveSession } from '../lib/signApi'
+import {
+  predictLiveFrame,
+  predictSignVideo,
+  resetLiveSession,
+  SIGN_API_CONFIGURED,
+  SIGN_OFFLINE_MESSAGE,
+} from '../lib/signApi'
+import { speakTr } from '../lib/speech'
 
 type Tab = 'shadow' | 'chat'
 
@@ -88,15 +95,6 @@ function nowClock() {
   return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
 }
 
-function speakTr(text: string) {
-  if (!window.speechSynthesis) return
-  window.speechSynthesis.cancel()
-  const u = new SpeechSynthesisUtterance(text)
-  u.lang = 'tr-TR'
-  u.rate = 0.95
-  window.speechSynthesis.speak(u)
-}
-
 const seedMessages: ChatMsg[] = [
   {
     id: 'seed-anne',
@@ -155,6 +153,10 @@ export function YakinlarimPage() {
 
   const recordTid = async () => {
     if (recording) return
+    if (!SIGN_API_CONFIGURED) {
+      setCamError(`${SIGN_OFFLINE_MESSAGE} Mesajını klavyeyle yazabilirsin.`)
+      return
+    }
     setCamError(null)
     setRecording(true)
     setRecStatus('Kamera açılıyor…')
@@ -182,6 +184,7 @@ export function YakinlarimPage() {
 
       let bestLabel: string | null = null
       let bestConf = 0
+      let offline = false
       const started = performance.now()
 
       // MediaRecorder/webm OpenCV’de sık “çok kısa” oluyor → kare kare live-frame
@@ -196,6 +199,10 @@ export function YakinlarimPage() {
           )
           if (blob) {
             const result = await predictLiveFrame(sessionId, blob)
+            if (result.offline) {
+              offline = true
+              break
+            }
             if (result.label && (result.confidence ?? 0) > bestConf) {
               bestConf = result.confidence ?? 0
               bestLabel = result.label
@@ -219,7 +226,10 @@ export function YakinlarimPage() {
       stopPreview()
       void resetLiveSession(sessionId)
 
-      if (bestLabel && bestConf >= 0.25) {
+      if (offline) {
+        setCamError(`${SIGN_OFFLINE_MESSAGE} Mesajını klavyeyle yazabilirsin.`)
+        setRecStatus('')
+      } else if (bestLabel && bestConf >= 0.25) {
         const word = bestLabel.toLocaleUpperCase('tr-TR')
         pushMine(word, 'tid')
         setRecStatus(`Gönderildi: ${word}`)
@@ -270,7 +280,7 @@ export function YakinlarimPage() {
       }
     } catch {
       stopPreview()
-      setCamError('Kamera izni gerekli veya backend kapalı (port 8000)')
+      setCamError('Kamera izni gerekli — tarayıcı adres çubuğundan izin ver')
       setRecStatus('')
     } finally {
       setRecording(false)

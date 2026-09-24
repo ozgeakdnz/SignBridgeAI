@@ -1,7 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { AppHeader } from '../components/layout'
 import { Icon } from '../components/Icon'
-import { predictLiveFrame, resetLiveSession } from '../lib/signApi'
+import { useRadar } from '../lib/radar/RadarProvider'
+import {
+  predictLiveFrame,
+  resetLiveSession,
+  SIGN_API_CONFIGURED,
+  SIGN_OFFLINE_MESSAGE,
+} from '../lib/signApi'
+import { speakTr, useLiveCaptions } from '../lib/speech'
 
 type Mode = 'cift-yonlu' | 'tid-kamerasi' | 'yaz-konus'
 type SpeakState = 'idle' | 'sending' | 'done'
@@ -134,7 +141,7 @@ function cameraErrorMessage(err: unknown): string {
 export function KopruPage() {
   const [mode, setMode] = useState<Mode>('cift-yonlu')
   const [zoomed, setZoomed] = useState(false)
-  const [listening, setListening] = useState(false)
+  const [ttsPlaying, setTtsPlaying] = useState(false)
   const [reply, setReply] = useState('Teşekkür ederim, kaçıncı oda?')
   const [detected, setDetected] = useState('“Kamerayı aç — işaret yaptıkça canlı yazılır”')
   const [speakState, setSpeakState] = useState<SpeakState>('idle')
@@ -147,6 +154,10 @@ export function KopruPage() {
   const [recognizing, setRecognizing] = useState(false)
   const [liveConf, setLiveConf] = useState(0)
   const [guideOpen, setGuideOpen] = useState(false)
+  const [signOffline, setSignOffline] = useState(!SIGN_API_CONFIGURED)
+  const captions = useLiveCaptions()
+  const { status: radarStatus, start: startRadar, stop: stopRadar } = useRadar()
+  const radarPausedRef = useRef(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const streamRef = useRef<MediaStream | null>(null)
@@ -260,6 +271,10 @@ export function KopruPage() {
   // Canlı tanıma: kare kare JPEG → backend MediaPipe + 30'luk tampon (video kaydı yok)
   useEffect(() => {
     if (!cameraOn) return
+    if (!SIGN_API_CONFIGURED) {
+      setDetected('“Tanıma sunucusu kapalı”')
+      return
+    }
 
     let cancelled = false
     let inFlight = false
@@ -288,6 +303,15 @@ export function KopruPage() {
       try {
         const result = await predictLiveFrame(sessionIdRef.current, blob)
         if (cancelled) return
+
+        if (result.offline) {
+          cancelled = true
+          window.clearInterval(id)
+          setRecognizing(false)
+          setSignOffline(true)
+          setDetected('“Tanıma sunucusu kapalı”')
+          return
+        }
 
         setLiveConf(result.confidence || 0)
 
@@ -350,10 +374,35 @@ export function KopruPage() {
     }
   }, [cameraOn])
 
+  // Radar ve altyazı aynı mikrofonu paylaşamıyor (özellikle iOS); altyazı süresince radar duraklar
+  const toggleCaptions = () => {
+    if (captions.listening) {
+      captions.stop()
+      return
+    }
+    if (radarStatus === 'listening' || radarStatus === 'starting') {
+      radarPausedRef.current = true
+      stopRadar()
+    }
+    if (!captions.start() && radarPausedRef.current) {
+      radarPausedRef.current = false
+      void startRadar()
+    }
+  }
+
+  useEffect(() => {
+    if (captions.listening || !radarPausedRef.current) return
+    radarPausedRef.current = false
+    void startRadar()
+  }, [captions.listening, startRadar])
+
+  const captionText = [...captions.lines, captions.interim].filter(Boolean).join(' ')
+
   const onListen = () => {
-    if (listening) return
-    setListening(true)
-    window.setTimeout(() => setListening(false), 2500)
+    if (ttsPlaying || !captionText) return
+    // Kendi seslendirmemizi altyazıya yazmasın
+    if (captions.listening) captions.stop()
+    if (speakTr(captionText, () => setTtsPlaying(false))) setTtsPlaying(true)
   }
 
   const onChip = (text: string) => {
@@ -366,10 +415,12 @@ export function KopruPage() {
   const onSpeak = () => {
     if (speakState !== 'idle') return
     setSpeakState('sending')
-    window.setTimeout(() => {
+    const finish = () => {
       setSpeakState('done')
       window.setTimeout(() => setSpeakState('idle'), 1500)
-    }, 1800)
+    }
+    if (captions.listening) captions.stop()
+    if (!speakTr(reply, finish)) window.setTimeout(finish, 1800)
   }
 
   return (
@@ -446,24 +497,57 @@ export function KopruPage() {
                   : 'bg-surface-container-low'
               }`}
             >
-              <p
-                className={`font-medium leading-relaxed transition-all duration-200 ${
-                  zoomed
-                    ? 'text-[26px] leading-[34px] font-bold tracking-tight text-primary'
-                    : 'text-lg text-on-surface'
-                }`}
-              >
-                “Merhaba, poliklinik muayene girişiniz yapıldı. Doktor bey az sonra sizi
-                çağıracak.”
-              </p>
+              {captionText ? (
+                <p
+                  aria-live="polite"
+                  className={`font-medium leading-relaxed transition-all duration-200 ${
+                    zoomed
+                      ? 'text-[26px] leading-[34px] font-bold tracking-tight text-primary'
+                      : 'text-lg text-on-surface'
+                  }`}
+                >
+                  {captions.lines.join(' ')}
+                  {captions.interim && (
+                    <span className="opacity-60">
+                      {captions.lines.length ? ' ' : ''}
+                      {captions.interim}
+                    </span>
+                  )}
+                </p>
+              ) : (
+                <p className="text-[15px] leading-relaxed text-on-surface-variant">
+                  {!captions.supported
+                    ? 'Bu tarayıcı canlı altyazıyı desteklemiyor. Chrome veya Safari ile aç.'
+                    : captions.listening
+                      ? 'Dinleniyor… Karşındaki kişi konuştukça burada yazıya dökülecek.'
+                      : 'Altyazıyı başlat: karşındaki kişinin konuşması anında yazıya dökülür.'}
+                </p>
+              )}
               <div className="flex items-center gap-1.5 text-on-surface-variant">
                 <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-tertiary-container opacity-60" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-tertiary-container" />
+                  {captions.listening && (
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-tertiary-container opacity-60" />
+                  )}
+                  <span
+                    className={`relative inline-flex h-2 w-2 rounded-full ${
+                      captions.listening ? 'bg-tertiary-container' : 'bg-outline'
+                    }`}
+                  />
                 </span>
-                <span className="text-[11px] font-bold">Tamamlandı • Gişe Görevlisi</span>
+                <span className="text-[11px] font-bold">
+                  {captions.listening
+                    ? 'Dinleniyor • Mikrofon açık'
+                    : captionText
+                      ? 'Duraklatıldı'
+                      : 'Altyazı kapalı'}
+                </span>
               </div>
-              {listening && (
+              {captions.error && (
+                <p className="rounded-md bg-error-container/30 px-3 py-2 text-[12px] font-semibold text-on-surface">
+                  {captions.error}
+                </p>
+              )}
+              {ttsPlaying && (
                 <div className="mt-1 flex items-center gap-2 rounded-md bg-primary-fixed px-2.5 py-1 text-xs font-semibold text-primary">
                   <Icon name="volume_up" className="animate-bounce text-[16px]" />
                   <span>Metin seslendiriliyor...</span>
@@ -504,7 +588,30 @@ export function KopruPage() {
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-1">
+            <div className="flex flex-wrap items-center justify-end gap-2 pt-1">
+              <button
+                type="button"
+                onClick={toggleCaptions}
+                disabled={!captions.supported}
+                className={`mr-auto flex h-10 cursor-pointer items-center gap-1.5 rounded-md px-3.5 text-[13px] font-bold shadow-sm transition-all duration-150 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 ${
+                  captions.listening
+                    ? 'bg-error-container text-on-error-container'
+                    : 'bg-primary-container text-on-primary'
+                }`}
+              >
+                <Icon name={captions.listening ? 'mic_off' : 'mic'} className="text-[18px]" />
+                <span>{captions.listening ? 'Altyazıyı Durdur' : 'Altyazıyı Başlat'}</span>
+              </button>
+              {captionText && !captions.listening && (
+                <button
+                  type="button"
+                  onClick={captions.clear}
+                  className="flex h-10 cursor-pointer items-center gap-1.5 rounded-md bg-surface-container-low px-3 text-[13px] font-semibold text-primary transition-all duration-150 hover:bg-surface-container active:scale-95"
+                >
+                  <Icon name="backspace" className="text-[18px]" />
+                  <span>Temizle</span>
+                </button>
+              )}
               <button
                 type="button"
                 onClick={() => setZoomed((v) => !v)}
@@ -516,13 +623,14 @@ export function KopruPage() {
               <button
                 type="button"
                 onClick={onListen}
-                className="flex h-10 cursor-pointer items-center gap-1.5 rounded-md bg-surface-container-low px-3.5 text-[13px] font-semibold text-primary transition-all duration-150 hover:bg-surface-container active:scale-95"
+                disabled={!captionText}
+                className="flex h-10 cursor-pointer items-center gap-1.5 rounded-md bg-surface-container-low px-3.5 text-[13px] font-semibold text-primary transition-all duration-150 hover:bg-surface-container active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <Icon
-                  name={listening ? 'graphic_eq' : 'volume_up'}
-                  className={`text-[18px] ${listening ? 'animate-spin' : ''}`}
+                  name={ttsPlaying ? 'graphic_eq' : 'volume_up'}
+                  className={`text-[18px] ${ttsPlaying ? 'animate-spin' : ''}`}
                 />
-                <span>{listening ? 'Oynatılıyor...' : 'Sesli Dinle'}</span>
+                <span>{ttsPlaying ? 'Oynatılıyor...' : 'Sesli Dinle'}</span>
               </button>
             </div>
           </div>
@@ -595,11 +703,21 @@ export function KopruPage() {
               </p>
             )}
 
-            <p className="text-[12px] leading-snug text-on-surface-variant">
-              Video kaydı yok: kamerayı aç, işaret yap — altta canlı yazar. En iyiler:{' '}
-              <strong className="text-on-surface">MERHABA</strong>,{' '}
-              <strong className="text-on-surface">EVET</strong>.
-            </p>
+            {signOffline ? (
+              <p className="flex items-start gap-2 rounded-md bg-secondary-fixed/40 px-3 py-2 text-[12px] leading-snug text-on-surface">
+                <Icon name="info" className="mt-px shrink-0 text-[16px] text-secondary" />
+                <span>
+                  {SIGN_OFFLINE_MESSAGE} Cevabını aşağıya yazabilir veya hazır cümlelere
+                  dokunabilirsin.
+                </span>
+              </p>
+            ) : (
+              <p className="text-[12px] leading-snug text-on-surface-variant">
+                Video kaydı yok: kamerayı aç, işaret yap — altta canlı yazar. En iyiler:{' '}
+                <strong className="text-on-surface">MERHABA</strong>,{' '}
+                <strong className="text-on-surface">EVET</strong>.
+              </p>
+            )}
 
             <div className="rounded-md bg-surface-container-low">
               <button
