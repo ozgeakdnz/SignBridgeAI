@@ -16,6 +16,10 @@ width:100%;background:var(--bg);color:var(--ink2);font-family:Manrope,"Helvetica
 .btn-soft{background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:0 6px 18px rgba(22,48,94,.06)}
 .btn-soft:hover{border-color:#B7C9EA;background:#FAFCFF}
 .btn-amber{background:linear-gradient(135deg,#F2B05C 0%,#E8923A 55%,#D07A28 100%);color:#fff;box-shadow:0 14px 30px rgba(232,146,58,.32)}
+.btn-white{background:#fff;color:var(--blue-dp);box-shadow:0 12px 28px rgba(0,0,0,.12)}
+.btn-white:hover{background:#F7FAFE}
+.btn-ghost-light{background:transparent;color:#E8F0FE;border:1.5px solid rgba(255,255,255,.35)}
+.btn-ghost-light:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.55)}
 .chip{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:9px 16px;font-size:13px;font-weight:700}
 
 /* soft decorative blobs */
@@ -175,20 +179,42 @@ position:relative;overflow:hidden}
 /* beta */
 .sec-beta{padding:90px 0;background:
   radial-gradient(520px 240px at 20% 100%,rgba(232,146,58,.12),transparent 60%),
-  var(--bg)}
+  radial-gradient(rgba(22,48,94,.04) 1px,transparent 1px),
+  var(--bg);background-size:auto,22px 22px,auto}
 .beta-box{position:relative;background:
   radial-gradient(420px 220px at 88% 20%,rgba(242,176,92,.35),transparent 55%),
   linear-gradient(125deg,#12284F 0%,#1E4BB8 48%,#2F63D8 100%);
 border-radius:36px;padding:64px;overflow:hidden;display:flex;align-items:center;gap:60px;box-shadow:0 30px 60px rgba(18,40,79,.35)}
+.beta-box-cta{flex-direction:column;align-items:center;text-align:center;gap:28px;padding:80px 56px 72px;
+  background:
+    radial-gradient(520px 280px at 50% -10%,rgba(74,125,232,.45),transparent 55%),
+    linear-gradient(125deg,#163968 0%,#12284F 42%,#1A3A72 100%);
+  border-radius:40px 40px 28px 28px}
 .beta-deco{position:absolute;right:-40px;bottom:-60px;opacity:.35;pointer-events:none}
+.beta-box-cta .beta-deco{left:50%;right:auto;bottom:auto;top:50%;transform:translate(-50%,-50%);opacity:.1}
 .beta-copy{position:relative;flex:1 1 0;max-width:520px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.beta-copy-cta{max-width:820px;align-items:center;gap:18px}
+.beta-eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:800;color:#B8F26A}
 .beta-copy h2{font-size:40px;line-height:1.12;color:#fff}
+.beta-copy-cta h2{font-size:clamp(28px,4.2vw,46px);line-height:1.15;max-width:22ch}
 .beta-copy p{font-size:17px;line-height:1.6;color:#DEE9FF}
+.beta-copy-cta p{max-width:54ch;color:#C5D6F2;font-size:17px}
 .beta-form{position:relative;width:440px;flex-shrink:0;display:flex;flex-direction:column;gap:10px;max-width:100%}
-.beta-form label{font-size:13px;color:#DEE9FF}
-.beta-row{display:flex;gap:10px;flex-wrap:wrap}
-.beta-row input{flex:1 1 180px;min-width:0;padding:16px 18px;border-radius:999px;border:none;background:#fff;color:var(--ink);font-family:Manrope,sans-serif;font-size:15px;outline:none}
-.beta-row .btn{padding:15px 26px;font-size:15px}
+.beta-form-cta{width:min(420px,100%);align-items:stretch;text-align:left;z-index:1}
+.beta-form label{font-size:13px;color:#DEE9FF;font-weight:600}
+.beta-form-cta label{display:block;margin-bottom:2px;text-align:left}
+.beta-row{display:flex;gap:8px;flex-wrap:nowrap;align-items:stretch;width:100%}
+.beta-row input{
+  flex:1 1 auto;min-width:0;width:auto;height:48px;padding:0 16px;border-radius:14px;
+  border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.94);color:var(--ink);
+  font-family:Manrope,sans-serif;font-size:16px;line-height:1.2;outline:none;
+  box-sizing:border-box;-webkit-appearance:none;appearance:none
+}
+.beta-row input::placeholder{color:#8FA3C7}
+.beta-row input:focus{border-color:rgba(184,242,106,.7);box-shadow:0 0 0 3px rgba(184,242,106,.2)}
+.beta-row .btn{flex:0 0 auto;height:48px;padding:0 20px;font-size:15px;border-radius:14px;white-space:nowrap;box-sizing:border-box}
+.beta-actions{position:relative;display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:8px}
+.beta-actions .btn{min-width:168px;padding:16px 32px}
 
 /* footer */
 .sb-footer{background:linear-gradient(180deg,#16345F 0%,#0E2248 100%);margin-top:24px;padding:8px 0 36px;color:#D7E3F8;position:relative}
@@ -238,7 +264,9 @@ border-radius:36px;padding:64px;overflow:hidden;display:flex;align-items:center;
   .faq-wrap{gap:40px}
   .faq-side{width:220px}
   .beta-box{padding:48px;gap:36px}
+  .beta-box-cta{padding:64px 40px 56px}
   .beta-form{width:360px}
+  .beta-form-cta{width:min(440px,100%)}
 }
 
 /* phone / small tablet */
@@ -313,11 +341,19 @@ border-radius:36px;padding:64px;overflow:hidden;display:flex;align-items:center;
   .faq p{font-size:15px}
 
   .beta-box{flex-direction:column;align-items:stretch;gap:22px;padding:28px 22px;border-radius:28px}
+  .beta-box-cta{align-items:center;gap:16px;padding:28px 18px 24px;border-radius:24px}
+  .beta-copy{max-width:none}
+  .beta-copy-cta{gap:12px;width:100%}
   .beta-copy h2{font-size:28px}
-  .beta-copy p{font-size:15px}
-  .beta-form{width:100%}
-  .beta-row{flex-direction:column}
-  .beta-row input,.beta-row .btn{width:100%}
+  .beta-copy-cta h2{font-size:clamp(22px,6vw,28px);max-width:none;line-height:1.2}
+  .beta-copy p,.beta-copy-cta p{font-size:14px;line-height:1.55;max-width:none}
+  .beta-eyebrow{font-size:11px;letter-spacing:.16em}
+  .beta-form,.beta-form-cta{width:100%;max-width:100%}
+  .beta-row{flex-direction:row;flex-wrap:nowrap;gap:8px}
+  .beta-row input{height:44px;padding:0 14px;border-radius:12px;font-size:16px}
+  .beta-row .btn{height:44px;padding:0 16px;font-size:14px;border-radius:12px;min-width:0}
+  .beta-actions{flex-direction:column;align-items:stretch;width:100%}
+  .beta-actions .btn{width:100%;min-width:0}
   .beta-deco{display:none}
 
   .foot{grid-template-columns:1fr 1fr;gap:28px 20px;padding:40px 0 24px}
@@ -336,4 +372,11 @@ border-radius:36px;padding:64px;overflow:hidden;display:flex;align-items:center;
   .foot{grid-template-columns:1fr}
   .foot>div:first-child{grid-column:auto}
   .btn{padding:14px 22px;font-size:15px}
+  .sec-beta{padding:40px 0}
+  .beta-box-cta{padding:22px 14px 20px;gap:14px;border-radius:20px}
+  .beta-copy-cta h2{font-size:22px}
+  .beta-copy-cta p{font-size:13px}
+  .beta-row{gap:6px}
+  .beta-row input{height:42px;padding:0 12px;border-radius:11px}
+  .beta-row .btn{height:42px;padding:0 14px;font-size:13px;border-radius:11px}
 }
