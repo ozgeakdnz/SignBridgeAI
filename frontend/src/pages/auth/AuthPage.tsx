@@ -388,4 +388,15 @@ const authCss = `
 .auth-modal-body{font-size:14px;line-height:1.65;color:var(--muted)}
 .auth-modal-body p{margin:0 0 10px}
 .auth-modal .auth-submit{width:100%;margin-top:14px}
+@media (max-width:480px){
+  .auth-top{padding:16px 14px 4px}
+  .auth-brand{font-size:15px;gap:8px}
+  .auth-main{padding:8px 14px 28px}
+  .auth-card{padding:22px 16px 20px;border-radius:22px}
+  .auth-card h1{font-size:24px}
+  .auth-tick{width:44px}
+  .auth-tick-label{font-size:12.5px;padding:12px 12px 12px 10px}
+  .auth-modal-backdrop{padding:12px;align-items:flex-end}
+  .auth-modal{max-height:min(88dvh,720px);border-radius:20px 20px 12px 12px;padding:18px}
+}
 `

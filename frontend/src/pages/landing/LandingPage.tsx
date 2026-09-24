@@ -18,6 +18,17 @@ function selectProductTab(tabId: string) {
   }
 }
 
+function setMobileMenu(root: HTMLElement, open: boolean) {
+  const menu = root.querySelector<HTMLElement>('#mobile-menu')
+  const toggle = root.querySelector<HTMLButtonElement>('.nav-toggle')
+  if (!menu || !toggle) return
+  menu.classList.toggle('open', open)
+  if (open) menu.removeAttribute('hidden')
+  else menu.setAttribute('hidden', '')
+  toggle.setAttribute('aria-expanded', open ? 'true' : 'false')
+  toggle.setAttribute('aria-label', open ? 'Menüyü kapat' : 'Menüyü aç')
+}
+
 export function LandingPage() {
   const navigate = useNavigate()
   const rootRef = useRef<HTMLDivElement>(null)
@@ -27,12 +38,22 @@ export function LandingPage() {
     if (!root) return
 
     const onClick = (e: MouseEvent) => {
-      const a = (e.target as HTMLElement | null)?.closest?.('a')
+      const target = e.target as HTMLElement | null
+      const toggle = target?.closest?.('.nav-toggle') as HTMLButtonElement | null
+      if (toggle) {
+        e.preventDefault()
+        const open = toggle.getAttribute('aria-expanded') !== 'true'
+        setMobileMenu(root, open)
+        return
+      }
+
+      const a = target?.closest?.('a')
       if (!a) return
       const href = a.getAttribute('href') || ''
 
       if (href === '/giris' || href.startsWith('/giris')) {
         e.preventDefault()
+        setMobileMenu(root, false)
         navigate('/giris')
         return
       }
@@ -42,6 +63,7 @@ export function LandingPage() {
         const id = href.slice(1)
         const tab = a.getAttribute('data-sbtab')
         if (tab) selectProductTab(tab)
+        setMobileMenu(root, false)
         scrollSectionFlush(id)
         history.replaceState(null, '', href)
       }

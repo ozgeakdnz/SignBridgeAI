@@ -18,18 +18,32 @@
       <span class="navpill">
         <a href="#urun">Ürün</a><a href="#neden">Neden</a><a href="#nasil">Nasıl çalışır</a><a href="#fiyat">Fiyat</a><a href="#sss">SSS</a>
       </span>
-      <span style="display:flex;align-items:center;gap:10px">
-        <a href="/giris" class="btn btn-soft" style="padding:13px 22px;font-size:15px">Giriş Yap / Kaydol</a>
-        <a href="#beta" class="btn btn-primary" style="padding:13px 26px;font-size:15px">Beta'ya katıl</a>
+      <span class="nav-actions">
+        <a href="/giris" class="btn btn-soft nav-cta">Giriş Yap / Kaydol</a>
+        <a href="#beta" class="btn btn-primary nav-cta">Beta'ya katıl</a>
+        <button type="button" class="nav-toggle" aria-label="Menüyü aç" aria-expanded="false" aria-controls="mobile-menu">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
       </span>
     </nav>
+    <div class="mobile-menu" id="mobile-menu" hidden>
+      <a href="#urun">Ürün</a>
+      <a href="#neden">Neden</a>
+      <a href="#nasil">Nasıl çalışır</a>
+      <a href="#fiyat">Fiyat</a>
+      <a href="#sss">SSS</a>
+      <a href="/giris" class="btn btn-soft">Giriş Yap / Kaydol</a>
+      <a href="#beta" class="btn btn-primary">Beta'ya katıl</a>
+    </div>
 
     <div class="hero-grid">
       <div class="hero-copy">
         <span class="chip" style="background:#fff;border:1px solid var(--line);color:var(--ink);align-self:flex-start;box-shadow:0 8px 20px rgba(22,48,94,.06)"><span class="dot"></span> Cihaz üzerinde yapay zekâ · Türkçe ↔ TİD</span>
         <h1 class="h1">Hayatın <span class="grad">sesine</span> eriş.</h1>
         <p class="lead" style="max-width:470px">Konuşmaları, işaretleri ve çevredeki sesleri anlayabileceğin biçime çevirir.</p>
-        <span style="display:flex;gap:14px;padding-top:4px">
+        <span class="hero-actions">
           <a href="#beta" class="btn btn-primary">Beta'ya katıl</a>
           <a href="#urun" class="btn btn-soft">Ürünü gör</a>
         </span>
@@ -120,7 +134,7 @@
 </section>
 
 <!-- MARQUEE -->
-<section class="marquee">
+<section class="marquee marquee-ink">
   <span class="mq-track">
     <span class="mq-item">Kapı zili</span><span class="mq-sep">◆</span>
     <span class="mq-item">Yangın alarmı</span><span class="mq-sep">◆</span>
@@ -141,25 +155,28 @@
 
 <!-- ÜRÜN / TABS -->
 <section id="urun" class="sec-urun" style="position:relative">
+  <span class="blob b-amber" style="width:360px;height:360px;left:-140px;top:40px;opacity:.45"></span>
   <span class="blob b-sky" style="width:420px;height:420px;right:-180px;top:120px;opacity:.5"></span>
   <div class="wrap">
-    <div style="display:flex;flex-direction:column;gap:16px;align-items:flex-start">
+    <div class="sec-head">
       <span class="eyebrow">Ürün</span>
-      <h2 style="font-size:46px;line-height:1.1;max-width:620px">Dört ekran, tek akış</h2>
+      <h2 class="sec-title">Dört ekran, tek akış</h2>
     </div>
 
-    <div style="padding-top:32px">
+    <div class="tabs-block">
       <input class="tabin" type="radio" name="sbtabs" id="tb1" checked>
       <input class="tabin" type="radio" name="sbtabs" id="tb2">
       <input class="tabin" type="radio" name="sbtabs" id="tb3">
       <input class="tabin" type="radio" name="sbtabs" id="tb4">
 
-      <span class="tabbar">
-        <label class="tablbl l1" for="tb1">Köprü</label>
-        <label class="tablbl l2" for="tb2">Güvenlik</label>
-        <label class="tablbl l3" for="tb3">Yakınlarım</label>
-        <label class="tablbl l4" for="tb4">Topluluk</label>
-      </span>
+      <div class="tabbar-scroll">
+        <span class="tabbar">
+          <label class="tablbl l1" for="tb1">Köprü</label>
+          <label class="tablbl l2" for="tb2">Güvenlik</label>
+          <label class="tablbl l3" for="tb3">Yakınlarım</label>
+          <label class="tablbl l4" for="tb4">Topluluk</label>
+        </span>
+      </div>
 
       <div class="panels">
         <div class="panel p1">
@@ -185,7 +202,7 @@
             </div>
           </div>
           <div class="feat">
-            <h3 style="font-size:34px;line-height:1.15">Yüz yüze konuş, araya kimse girmesin</h3>
+            <h3 class="feat-title">Yüz yüze konuş, araya kimse girmesin</h3>
             <span class="featline"><span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6FE0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg></span>Konuşma anında yazıya ve işaret diline döner</span>
             <span class="featline"><span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6FE0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg></span>İşaretler Türkçe metne ve sese çevrilir</span>
             <span class="featline"><span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6FE0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg></span>Yapay zekâ yetersiz kalırsa Yaz-Konuş devreye girer</span>
@@ -218,7 +235,7 @@
             </div>
           </div>
           <div class="feat">
-            <h3 style="font-size:34px;line-height:1.15">Evdeki sesi ilk sen fark et</h3>
+            <h3 class="feat-title">Evdeki sesi ilk sen fark et</h3>
             <span class="featline"><span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6FE0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg></span>Zil, alarm, siren ve korna için ayrı titreşim desenleri</span>
             <span class="featline"><span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6FE0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg></span>Ekran ve flaşla görsel uyarı</span>
             <span class="featline"><span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6FE0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg></span>Tek dokunuşla yakınlara sessiz S.O.S. ve konum</span>
@@ -249,7 +266,7 @@
             </div>
           </div>
           <div class="feat">
-            <h3 style="font-size:34px;line-height:1.15">Sofradaki sohbetin içinde kal</h3>
+            <h3 class="feat-title">Sofradaki sohbetin içinde kal</h3>
             <span class="featline"><span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6FE0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg></span>Kimin ne söylediği kısa kartlara düşer</span>
             <span class="featline"><span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6FE0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg></span>Aileyle ses, yazı ve TİD videosu ile mesajlaşma</span>
             <span class="featline"><span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6FE0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg></span>Sesli mesajlar otomatik yazıya çevrilir</span>
@@ -274,7 +291,7 @@
             </div>
           </div>
           <div class="feat">
-            <h3 style="font-size:34px;line-height:1.15">Yalnız değilsin</h3>
+            <h3 class="feat-title">Yalnız değilsin</h3>
             <span class="featline"><span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6FE0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg></span>TİD pratik buluşmaları ve erişilebilir etkinlikler</span>
             <span class="featline"><span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6FE0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg></span>Gönüllü ve pratik arkadaşı eşleşmesi</span>
             <span class="featline"><span class="tick"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6FE0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg></span>Şehrindeki etkinlikler tek yerde</span>
@@ -289,11 +306,11 @@
 <section id="neden" class="sec-neden">
   <div class="wrap">
     <div class="neden-head">
-      <span class="eyebrow">Neden</span>
+      <span class="eyebrow eyebrow-amber">Neden</span>
       <h2>Neden SignBridge AI?</h2>
     </div>
     <div class="bento">
-      <div class="b b-wide" style="background:var(--blue);border-color:var(--blue)">
+      <div class="b b-wide b-ink">
         <svg width="420" height="180" viewBox="0 0 420 180" fill="none" aria-hidden="true" style="position:absolute;right:-30px;bottom:-20px;opacity:.5">
           <path d="M0 90c42-80 84-80 126 0s84 80 126 0 84-80 126 0" stroke="#BFD6FF" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 14" style="animation:sb-dash 9s linear infinite"></path>
         </svg>
@@ -301,27 +318,27 @@
         <h3 style="color:#fff;font-size:28px;max-width:420px">Ses telefondan çıkmaz</h3>
         <p style="color:#DEE9FF;max-width:430px">İşlem cihazda yapılır: konuşmalar kaydedilmez, sunucuya gönderilmez, rapor istenmez.</p>
       </div>
-      <div class="b">
+      <div class="b b-tint-amber">
         <span class="ic" style="background:#FCEEDC">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C97A1E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3"></path><path d="M12 18v3"></path><path d="M5 12H2"></path><path d="M22 12h-3"></path><circle cx="12" cy="12" r="4"></circle></svg>
         </span>
         <h3>Ek donanım yok</h3>
         <p>Kullandığın telefon yeterli. Kurulum ya da ek cihaz gerekmez.</p>
       </div>
-      <div class="b">
+      <div class="b b-tint-sky">
         <span class="ic" style="background:var(--sky)">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B6FE0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 18V7"></path><path d="M10 18V4"></path><path d="M16 18v-8"></path><path d="M3 21h18"></path></svg>
         </span>
         <h3>İşaret dili şart değil</h3>
         <p>Ses uyarıları ve altyazı, sonradan işitme kaybı yaşayanlar için de çalışır.</p>
       </div>
-      <div class="b b-wide" style="flex-direction:row;align-items:center;gap:26px">
+      <div class="b b-wide b-row b-tint-mint">
         <span class="ic" style="background:#E0F5EC;flex-shrink:0">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#12805A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.3-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.7-7 9-7 9z"></path></svg>
         </span>
-        <span style="display:flex;flex-direction:column;gap:8px">
+        <span class="b-row-copy">
           <h3>Ödeme gücü engel olmasın</h3>
-          <p style="max-width:560px">Askıda Abonelik ile bir bağışçının aldığı paket, dernekler aracılığıyla ihtiyaç sahibine ulaşır.</p>
+          <p>Askıda Abonelik ile bir bağışçının aldığı paket, dernekler aracılığıyla ihtiyaç sahibine ulaşır.</p>
         </span>
       </div>
     </div>
@@ -329,24 +346,24 @@
 </section>
 
 <!-- NASIL ÇALIŞIR -->
-<section id="nasil" style="padding:96px 0;background:#EDF4FE;position:relative;overflow:hidden">
+<section id="nasil" class="sec-nasil">
   <span class="blob b-amber" style="width:280px;height:280px;left:-120px;bottom:-120px;opacity:.5"></span>
   <div class="wrap">
-    <h2 style="font-size:44px;line-height:1.1;max-width:560px;padding-bottom:40px">Telefon, kullanıcının kulağı ve sesi olur</h2>
+    <h2 class="sec-title sec-title-pad">Telefon, kullanıcının kulağı ve sesi olur</h2>
     <div class="steps">
-      <div class="step">
+      <div class="step step-blue">
         <span class="n" style="color:var(--blue)">01</span>
         <h3 style="font-size:24px">Algılar</h3>
         <p class="lead" style="font-size:16px">Konuşmayı, işaretleri ve çevredeki sesleri.</p>
         <span class="bars" style="height:18px;padding-top:6px"><span></span><span style="animation-delay:.1s"></span><span style="animation-delay:.2s;background:#8FB2F2"></span><span style="animation-delay:.3s;background:#CBDBF9"></span></span>
       </div>
-      <div class="step">
+      <div class="step step-amber">
         <span class="n" style="color:var(--amber-dp)">02</span>
         <h3 style="font-size:24px">Dönüştürür</h3>
         <p class="lead" style="font-size:16px">İşaret diline, yazıya, sese ve titreşime.</p>
         <span style="display:flex;gap:6px;padding-top:6px"><span class="tag tag-blue">TİD</span><span class="tag tag-amber">Yazı</span><span class="tag tag-green">Titreşim</span></span>
       </div>
-      <div class="step">
+      <div class="step step-mint">
         <span class="n" style="color:var(--green-dp)">03</span>
         <h3 style="font-size:24px">Aktarır</h3>
         <p class="lead" style="font-size:16px">Kullanıcıya ve yakınlarına, doğru anda.</p>
@@ -357,29 +374,29 @@
 </section>
 
 <!-- MARQUEE 2 -->
-<section class="marquee" style="background:#F7FAFE">
+<section class="marquee marquee-warm">
   <span class="mq-track rev">
-    <span class="mq-item" style="color:var(--muted);font-weight:600">Hastanede sıra anonsu</span><span class="mq-sep">◆</span>
-    <span class="mq-item" style="color:var(--muted);font-weight:600">Bankada gişe çağrısı</span><span class="mq-sep">◆</span>
-    <span class="mq-item" style="color:var(--muted);font-weight:600">Aile sofrasında sohbet</span><span class="mq-sep">◆</span>
-    <span class="mq-item" style="color:var(--muted);font-weight:600">Evde kapı zili</span><span class="mq-sep">◆</span>
-    <span class="mq-item" style="color:var(--muted);font-weight:600">Sokakta korna</span><span class="mq-sep">◆</span>
-    <span class="mq-item" style="color:var(--muted);font-weight:600">Hastanede sıra anonsu</span><span class="mq-sep">◆</span>
-    <span class="mq-item" style="color:var(--muted);font-weight:600">Bankada gişe çağrısı</span><span class="mq-sep">◆</span>
-    <span class="mq-item" style="color:var(--muted);font-weight:600">Aile sofrasında sohbet</span><span class="mq-sep">◆</span>
-    <span class="mq-item" style="color:var(--muted);font-weight:600">Evde kapı zili</span><span class="mq-sep">◆</span>
-    <span class="mq-item" style="color:var(--muted);font-weight:600">Sokakta korna</span><span class="mq-sep">◆</span>
+    <span class="mq-item">Hastanede sıra anonsu</span><span class="mq-sep">◆</span>
+    <span class="mq-item">Bankada gişe çağrısı</span><span class="mq-sep">◆</span>
+    <span class="mq-item">Aile sofrasında sohbet</span><span class="mq-sep">◆</span>
+    <span class="mq-item">Evde kapı zili</span><span class="mq-sep">◆</span>
+    <span class="mq-item">Sokakta korna</span><span class="mq-sep">◆</span>
+    <span class="mq-item">Hastanede sıra anonsu</span><span class="mq-sep">◆</span>
+    <span class="mq-item">Bankada gişe çağrısı</span><span class="mq-sep">◆</span>
+    <span class="mq-item">Aile sofrasında sohbet</span><span class="mq-sep">◆</span>
+    <span class="mq-item">Evde kapı zili</span><span class="mq-sep">◆</span>
+    <span class="mq-item">Sokakta korna</span><span class="mq-sep">◆</span>
   </span>
 </section>
 
 <!-- FİYAT -->
-<section id="fiyat" style="padding:96px 0">
+<section id="fiyat" class="sec-fiyat">
   <div class="wrap">
     <input class="tabin" type="checkbox" id="yr">
-    <div class="pricehead" style="display:flex;align-items:flex-end;justify-content:space-between;gap:30px;padding-bottom:36px">
-      <div style="display:flex;flex-direction:column;gap:14px">
-        <span class="eyebrow">Fiyat</span>
-        <h2 style="font-size:44px;line-height:1.1;max-width:520px">Temel iletişim herkese ücretsiz</h2>
+    <div class="pricehead">
+      <div class="sec-head">
+        <span class="eyebrow eyebrow-amber">Fiyat</span>
+        <h2 class="sec-title">Temel iletişim herkese ücretsiz</h2>
       </div>
       <span class="switch">
         <label class="swlbl m" for="yr">Aylık</label>
@@ -417,13 +434,13 @@
 </section>
 
 <!-- SSS -->
-<section id="sss" style="padding:90px 0;background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
-  <div class="wrap" style="display:flex;gap:80px;align-items:flex-start">
-    <div style="width:300px;flex-shrink:0;display:flex;flex-direction:column;gap:14px">
-      <span class="eyebrow">SSS</span>
-      <h2 style="font-size:38px;line-height:1.12">Merak edilenler</h2>
+<section id="sss" class="sec-sss">
+  <div class="wrap faq-wrap">
+    <div class="faq-side">
+      <span class="eyebrow eyebrow-mint">SSS</span>
+      <h2 class="sec-title">Merak edilenler</h2>
     </div>
-    <div class="faq" style="flex:1 1 0">
+    <div class="faq">
       <details open>
         <summary>112'nin yerine mi geçiyor?<span style="color:var(--muted);font-size:22px">+</span></summary>
         <p>Hayır. Yakınlarınıza bildirim ve konum gönderir; resmi acil çağrı için sizi Engelsiz 112'ye yönlendirir.</p>
@@ -445,23 +462,23 @@
 </section>
 
 <!-- CTA -->
-<section id="beta" style="padding:90px 0">
+<section id="beta" class="sec-beta">
   <div class="wrap">
-    <div style="position:relative;background:var(--blue);border-radius:36px;padding:64px;overflow:hidden;display:flex;align-items:center;gap:60px;box-shadow:0 30px 60px rgba(59,111,224,.28)">
-      <svg width="560" height="300" viewBox="0 0 560 300" fill="none" aria-hidden="true" style="position:absolute;right:-40px;bottom:-60px;opacity:.35">
+    <div class="beta-box">
+      <svg class="beta-deco" width="560" height="300" viewBox="0 0 560 300" fill="none" aria-hidden="true">
         <circle cx="360" cy="160" r="90" stroke="#fff" stroke-width="1"></circle>
         <circle cx="360" cy="160" r="160" stroke="#fff" stroke-width="1"></circle>
         <circle cx="360" cy="160" r="230" stroke="#fff" stroke-width="1"></circle>
       </svg>
-      <div style="position:relative;flex:1 1 0;max-width:520px;display:flex;flex-direction:column;gap:12px">
-        <h2 style="font-size:40px;line-height:1.12;color:#fff">Beta listesine katılın</h2>
-        <p style="font-size:17px;line-height:1.6;color:#DEE9FF">Yayına hazır olduğumuzda ilk siz haberdar olun.</p>
+      <div class="beta-copy">
+        <h2>Beta listesine katılın</h2>
+        <p>Yayına hazır olduğumuzda ilk siz haberdar olun.</p>
       </div>
-      <div style="position:relative;width:440px;flex-shrink:0;display:flex;flex-direction:column;gap:10px">
-        <label for="beta-email" style="font-size:13px;color:#DEE9FF">E-posta adresiniz</label>
-        <span style="display:flex;gap:10px">
-          <input id="beta-email" type="email" placeholder="ornek@eposta.com" style="flex:1 1 0;padding:16px 18px;border-radius:999px;border:none;background:#fff;color:var(--ink);font-family:Manrope,sans-serif;font-size:15px">
-          <button type="button" class="btn btn-amber" style="padding:15px 26px;font-size:15px">Kaydol</button>
+      <div class="beta-form">
+        <label for="beta-email">E-posta adresiniz</label>
+        <span class="beta-row">
+          <input id="beta-email" type="email" placeholder="ornek@eposta.com" autocomplete="email">
+          <button type="button" class="btn btn-amber">Kaydol</button>
         </span>
       </div>
     </div>
